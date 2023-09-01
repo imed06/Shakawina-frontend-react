@@ -13,7 +13,7 @@ export default function ListReclamation({complaint}) {
   });
 
   return (
-    <Table aria-label="Example static collection table" bottomContent={isOpen ? <div className="flex justify-center">{complaint.answer.content}</div> : null}>
+    <Table aria-label="Example static collection table" bottomContent={isOpen ? <div className="flex justify-center">{complaint.answer != null ? complaint.answer.content : null}</div> : null}>
       <TableHeader>
         <TableColumn>CODE</TableColumn>
         <TableColumn>OBJET RECLAMATION</TableColumn>

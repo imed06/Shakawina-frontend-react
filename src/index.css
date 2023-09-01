@@ -4,55 +4,54 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;1,100;1,200;1,300;1,400&display=swap');
 
-body{
+body {
   font-family: 'Montserrat', sans-serif;
   @apply bg-gray-50
 }
 
-main{
+main {
   /* background-image: url("./assets/zelija.png"); */
-  
-    @apply flex justify-between items-center flex-col 
+
+  @apply flex justify-between items-center flex-col
 }
 
 .content {
-  @apply  mt-20
+  @apply mt-20
 }
 
 .input {
   @apply flex w-full
 }
 
-.header{
-    @apply flex justify-evenly items-center
-
+.header {
+  @apply flex justify-evenly items-center
 }
 
-.header > p {
+.header>p {
   @apply text-2xl
 }
 
 h1 {
-    @apply font-bold text-black text-6xl;
-  }
+  @apply font-bold text-black text-6xl;
+}
 
 
-  h3 {
-    @apply font-bold text-lg;
-  }
+h3 {
+  @apply font-bold text-lg;
+}
 
-.stepper{
-    background-image: url("./assets/zelija.png");
-    background: #F8AF28;
-    @apply mt-32 bg-no-repeat rounded-[70px] px-20 py-10 
+.stepper {
+  background-image: url("./assets/zelija.png");
+  background: #F8AF28;
+  @apply mt-32 bg-no-repeat rounded-[70px] px-20 py-10
 }
 
 .title {
   background-image: url("./assets/Ellipse-12.png");
-  @apply bg-no-repeat bg-left-top pt-8 pl-8 leading-tight text-black text-4xl 
+  @apply bg-no-repeat bg-left-top pt-8 pl-8 leading-tight text-black text-4xl
 }
 
-footer{
+footer {
   @apply bg-[#101739] w-full
 }
 
@@ -62,87 +61,111 @@ footer{
 }
 
 
-.card-title {
-  color: #262626;
-  font-size: 1.5em;
-  line-height: normal;
-  font-weight: 700;
-  margin-bottom: 0.5em;
-}
-
-.small-desc {
-  font-size: 1em;
-  font-weight: 400;
-  line-height: 1.5em;
-  color: #452c2c;
-}
-
-.small-desc {
-  font-size: 1em;
-}
-
-.go-corner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  width: 2em;
-  height: 2em;
+.card-container {
+  width: 300px;
+  height: 300px;
+  position: relative;
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   overflow: hidden;
-  top: 0;
-  right: 0;
-  background: linear-gradient(135deg, #6293c8, #384c6c);
-  border-radius: 0 4px 0 32px;
+
 }
 
-.go-arrow {
-  margin-top: -4px;
-  margin-right: -4px;
-  color: white;
-  font-family: courier, sans;
+.adminReclamation {
+  background-image: url('./assets/reclamation.jpg');
+  /* Replace 'your-background-image.jpg' with your image file path */
+  background-size: cover;
+  /* Adjust the size of the background image */
+  background-position: center;
+  /* Center the background image */
+
+}
+
+.adminRemarque {
+  background-image: url('./assets/remarque.jpg');
+  /* Replace 'your-background-image.jpg' with your image file path */
+  background-size: cover;
+  /* Adjust the size of the background image */
+  background-position: center;
+  /* Center the background image */
+
+}
+
+.adminSuggestion {
+  background-image: url('./assets/suggestion.jpg');
+  /* Replace 'your-background-image.jpg' with your image file path */
+  background-size: cover;
+  /* Adjust the size of the background image */
+  background-position: center;
+  /* Center the background image */
+
 }
 
 .card {
-  display: block;
-  position: relative;
-  max-width: 300px;
-  max-height: 320px;
-  background-color: #f2f8f9;
-  border-radius: 10px;
-  padding: 2em 1.2em;
-  margin: 12px;
-  text-decoration: none;
-  z-index: 0;
-  overflow: hidden;
-  background: linear-gradient(to bottom, #c3e6ec, #a7d1d9);
-  font-family: Arial, Helvetica, sans-serif;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  cursor: pointer;
 }
 
-.card:before {
-  content: '';
+
+
+.card .front-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1)
+}
+
+.card .front-content p {
+  font-size: 32px;
+  font-weight: 700;
+  opacity: 1;
+  background: linear-gradient(-45deg, #f89b29 0%, #ff0f7b 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+  color: #000;
+}
+
+.card .content {
   position: absolute;
-  z-index: -1;
-  top: -16px;
-  right: -16px;
-  background: linear-gradient(135deg, #364a60, #384c6c);
-  height: 32px;
-  width: 32px;
-  border-radius: 32px;
-  transform: scale(1);
-  transform-origin: 50% 50%;
-  transition: transform 0.35s ease-out;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 10px;
+  background: linear-gradient(-45deg, rgba(200, 200, 200, 0.5) 0%, rgba(150, 150, 150, 0.5) 100%);
+  color: #000;
+  padding: 20px;
+  line-height: 1.5;
+  border-radius: 5px;
+  pointer-events: none;
+  transform: translateY(20%);
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
 }
 
-.card:hover:before {
-  transform: scale(28);
+.card .content .heading {
+  font-size: 32px;
+  font-weight: 700;
 }
 
-.card:hover .small-desc {
-  transition: all 0.5s ease-out;
-  color: rgba(255, 255, 255, 0.8);
+.card:hover .content {
+  transform: translateY(0);
 }
 
-.card:hover .card-title {
-  transition: all 0.5s ease-out;
-  color: #ffffff;
+.card:hover .front-content {
+  transform: translateY(-30%);
+}
+
+.card:hover .front-content p {
+  opacity: 0;
 }

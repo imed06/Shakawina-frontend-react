@@ -9,6 +9,7 @@ export default function LoginAdmin() {
     const [isVisible, setIsVisible] = useState(false);
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const [isSelected, setIsSelected] = useState(false)
     const [empty, setEmpty] = useState(false)
     const [error, setError] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
@@ -46,11 +47,13 @@ export default function LoginAdmin() {
 
             const json = await response.json();
             if (response.ok) {
-                // save the user to local storage
-                localStorage.setItem('user', JSON.stringify(json))
+                if (isSelected) {
+                    // save the user to local storage
+                    localStorage.setItem('user', JSON.stringify(json))
 
-                // update the auth context
-                dispatch({ type: 'LOGIN', payload: json })
+                    // update the auth context
+                    dispatch({ type: 'LOGIN', payload: json })
+                }
 
                 navigate('/admin/dashboard')
             }
@@ -202,6 +205,8 @@ export default function LoginAdmin() {
                         classNames={{
                             label: "text-small",
                         }}
+                        isSelected={isSelected}
+                        onValueChange={setIsSelected}
                     >
                         Remember me
                     </Checkbox>
