@@ -35,7 +35,7 @@ export default function Reclamation() {
       </div>
       <div className='flex flex-col items-center w-full h-full'>
         <div className='h-full overflow-auto px-2 space-y-8 py-8 '>
-        <div className='font-bold justify-start flex items-start text-xl ml-3'>Dashboard / Réclamations</div>
+        <div className='font-bold justify-start flex items-start text-xl'>Dashboard / Réclamations</div>
 
           {
             complaints != null &&

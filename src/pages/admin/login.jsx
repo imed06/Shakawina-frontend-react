@@ -1,8 +1,9 @@
-import { Button, Checkbox, Input, Spacer, Spinner } from '@nextui-org/react'
+import { Button, Checkbox, Input, Spacer, Spinner, Image } from '@nextui-org/react'
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import _ from 'lodash';
 import { useAuthContext } from '../../context/authContext';
+import logo from '../../assets/anemlogo.png'
 
 export default function LoginAdmin() {
     const navigate = useNavigate();
@@ -144,7 +145,7 @@ export default function LoginAdmin() {
     return (
         <div className='h-screen items-center admin'>
             <div className='h-full justify-center items-center flex flex-col'>
-                <div className='justify-center text-xl font-bold'>Log in</div>
+                <div className='justify-center text-xl font-bold'><Image src={logo} width={150}  alt='logo'></Image></div>
                 <Spacer y={8} />
                 {
                     error &&
@@ -204,7 +205,7 @@ export default function LoginAdmin() {
                         isSelected={isSelected}
                         onValueChange={setIsSelected}
                     >
-                        Remember me
+                        Se souvenir de moi
                     </Checkbox>
                     <Link href="#" size="sm">
                         <p className='text-primary'>Mot de passe oublié?</p>

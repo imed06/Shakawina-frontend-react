@@ -8,7 +8,7 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure
 export default function AnswerCard({ complaint }) {
 
     const [isOpenAnswer, setIsOpen] = useState(false)
-    const [message,setMessage] = useState(false)
+    const [message, setMessage] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
 
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -42,9 +42,13 @@ export default function AnswerCard({ complaint }) {
                 }),
             });
 
+            const json = await response.json()
+
+            console.log(json)
+
             if (response.ok) {
                 setMessage(true)
-            } 
+            }
         } catch (error) {
             console.error('Error sending request:', error);
         } finally {
@@ -55,39 +59,45 @@ export default function AnswerCard({ complaint }) {
     return (
         <Table aria-label="Example static collection table" bottomContent={
             isOpenAnswer ?
-                <div className="flex justify-center flex-col items-end">
-                    <Divider className="my-4" />
-                    <Textarea
-                        label="Réponse sur la réclamation"
-                        labelPlacement="outside"
-                        placeholder="Entrer votre réponse"
-                        onChange={(e) => setAnswerContent(e.target.value)}
-                    />
-                    <Spacer y={4} />
-                    {
-                        isLoading ?
-                            <Spinner />
-                            :
-                            <div className="flex justify-center items-center space-x-3">
-                                {
-                                    message &&
-                                    <div className="flex items-center p-3 text-sm mt-4 text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-                                        <svg className="flex-shrink-0 inline w-4 h-4 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-                                        </svg>
-                                        <span className="sr-only">Info</span>
-                                        <div>
-                                            <span className="font-medium">Réponse envoyée!</span>
+                complaint.status === "En révision" ?
+                    <div className="flex justify-center flex-col items-end">
+                        <Divider className="my-4" />
+                        <Textarea
+                            label="Réponse sur la réclamation"
+                            labelPlacement="outside"
+                            placeholder="Entrer votre réponse"
+                            onChange={(e) => setAnswerContent(e.target.value)}
+                        />
+                        <Spacer y={4} />
+                        {
+                            isLoading ?
+                                <Spinner />
+                                :
+                                <div className="flex justify-center items-center space-x-3">
+                                    {
+                                        message &&
+                                        <div className="flex items-center p-3 text-sm mt-4 text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                                            <svg className="flex-shrink-0 inline w-4 h-4 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                                            </svg>
+                                            <span className="sr-only">Info</span>
+                                            <div>
+                                                <span className="font-medium">Réponse envoyée!</span>
+                                            </div>
                                         </div>
-                                    </div>
-                                }
-                                <Button color="success" className=' w-xs text-xs font-medium text-white' onClick={handleSubmit}>
-                                    Soumettre
-                                </Button>
-                            </div>
+                                    }
+                                    <Button color="success" className=' w-xs text-xs font-medium text-white' onClick={handleSubmit}>
+                                        Soumettre
+                                    </Button>
+                                </div>
 
-                    }
-                </div>
+                        }
+                    </div>
+                    :
+                    <div>
+                        <Divider className="my-4" />
+                        {complaint.answer.content}
+                    </div>
                 :
                 null
         }
@@ -109,7 +119,7 @@ export default function AnswerCard({ complaint }) {
                     <TableCell>{formattedDate}</TableCell>
                     <TableCell>{complaint.type}</TableCell>
                     <TableCell>{complaint.content}</TableCell>
-                    <TableCell className="text-warning">{complaint.status}</TableCell>
+                    <TableCell className={complaint.status === "Traitée" ? "text-success" : "text-warning"} >{complaint.status}</TableCell>
                     <TableCell>
                         {
                             complaint.files.length !== 0 ?
@@ -141,7 +151,7 @@ export default function AnswerCard({ complaint }) {
                     </TableCell>
                     <TableCell className=" cursor-pointer">
                         <Button color="primary" className=' max-w-xs w-full text-xs font-medium' onClick={() => setIsOpen(!isOpenAnswer)}>
-                            Répondre
+                            {complaint.status === "En révision" ? "Répondre" : "Réponse"}
                         </Button>
                     </TableCell>
                 </TableRow>
