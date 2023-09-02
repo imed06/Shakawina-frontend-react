@@ -7,6 +7,10 @@ import Profile from "./pages/user/profile";
 import UserReclamations from "./pages/user/mesReclamations";
 import LoginAdmin from "./pages/admin/login";
 import Dashboard from "./pages/admin/dashboard";
+import Reclamation from "./pages/admin/pages/reclamation";
+import Suggestion from "./pages/admin/pages/suggestions";
+import Remarque from "./pages/admin/pages/remarques";
+import AdminProfile from "./pages/admin/profile";
 
 function App() {
   return (
@@ -20,6 +24,10 @@ function App() {
         <Route path="/user/reclamations" element={<UserReclamations />} />
         <Route path="/admin/login" element={<LoginAdmin />} />
         <Route path="/admin/dashboard" element={<Dashboard />} />
+        <Route path="/admin/reclamations" element={<Reclamation />} />
+        <Route path="/admin/remarques" element={<Remarque />} />
+        <Route path="/admin/suggestions" element={<Suggestion />} />
+        <Route path="/admin/profile" element={<AdminProfile />} />
       </Routes>
     </BrowserRouter>
   );

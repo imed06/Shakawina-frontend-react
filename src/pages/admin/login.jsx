@@ -47,13 +47,9 @@ export default function LoginAdmin() {
 
             const json = await response.json();
             if (response.ok) {
-                if (isSelected) {
-                    // save the user to local storage
-                    localStorage.setItem('user', JSON.stringify(json))
-
-                    // update the auth context
-                    dispatch({ type: 'LOGIN', payload: json })
-                }
+                localStorage.setItem('user', JSON.stringify(json))
+                // update the auth context
+                dispatch({ type: 'LOGIN', payload: json })
 
                 navigate('/admin/dashboard')
             }

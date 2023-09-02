@@ -3,18 +3,19 @@ import React, { useState } from "react";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Textarea, Button, Spacer, Divider, Image, Spinner } from "@nextui-org/react";
 import { useAuthContext } from "../../context/authContext";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@nextui-org/react";
-import { Link } from "react-router-dom";
 
 
 export default function AnswerCard({ complaint }) {
 
     const [isOpenAnswer, setIsOpen] = useState(false)
-
+    const [message,setMessage] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
 
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     const { user } = useAuthContext()
+
+    console.log(user)
 
     const formattedDate = new Date(complaint.createdAt).toLocaleDateString('en-US', {
         year: 'numeric',
@@ -42,12 +43,8 @@ export default function AnswerCard({ complaint }) {
             });
 
             if (response.ok) {
-                console.log('Answer added successfully');
-                // Reset the form
-                setAnswerContent('');
-            } else {
-                console.error('Error adding answer');
-            }
+                setMessage(true)
+            } 
         } catch (error) {
             console.error('Error sending request:', error);
         } finally {
@@ -71,9 +68,24 @@ export default function AnswerCard({ complaint }) {
                         isLoading ?
                             <Spinner />
                             :
-                            <Button color="success" className=' w-xs text-xs font-medium text-white' onClick={handleSubmit}>
-                                Soumettre
-                            </Button>
+                            <div className="flex justify-center items-center space-x-3">
+                                {
+                                    message &&
+                                    <div className="flex items-center p-3 text-sm mt-4 text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                                        <svg className="flex-shrink-0 inline w-4 h-4 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                                        </svg>
+                                        <span className="sr-only">Info</span>
+                                        <div>
+                                            <span className="font-medium">Réponse envoyée!</span>
+                                        </div>
+                                    </div>
+                                }
+                                <Button color="success" className=' w-xs text-xs font-medium text-white' onClick={handleSubmit}>
+                                    Soumettre
+                                </Button>
+                            </div>
+
                     }
                 </div>
                 :
@@ -103,7 +115,7 @@ export default function AnswerCard({ complaint }) {
                             complaint.files.length !== 0 ?
                                 <>
                                     <div onClick={onOpen} className="flex cursor-pointer justify-center items-center">
-                                        <Image src={"http://localhost:4000/uploads/" + complaint.files[0].path} width={70}/>
+                                        <Image src={"http://localhost:4000/uploads/" + complaint.files[0].path} width={70} />
                                     </div>
                                     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
                                         <ModalContent>
