@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Sidebar from '../../../components/shared/Sidebar';
 import AnswerCard from '../../../components/cards/reponse';
-import { Card, Skeleton, Spinner } from '@nextui-org/react';
 
 export default function Remarque() {
 

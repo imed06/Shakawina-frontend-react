@@ -33,12 +33,12 @@ export default function ListReclamation({ complaint }) {
       <TableBody emptyContent={"No rows to display."} content="kfjd">
         <TableRow key="1">
           <TableCell>{complaint.id}</TableCell>
-          <TableCell>{complaint.type}</TableCell>
+          <TableCell>{complaint.objet}</TableCell>
           <TableCell>{formattedDate}</TableCell>
           <TableCell>{complaint.type}</TableCell>
           <TableCell>{complaint.content}</TableCell>
           <TableCell className={complaint.status === "Traitée" ? "text-success" : "text-warning"}>{complaint.status}</TableCell>
-          <TableCell onClick={() => setIsOpen(!isOpen)} className=" cursor-pointer">{complaint.answer != null ? 1 : 0}</TableCell>
+          <TableCell onClick={() => setIsOpen(!isOpen)} className=" cursor-pointer text-center">{complaint.answer != null ? 1 : 0}</TableCell>
         </TableRow>
       </TableBody>
     </Table>

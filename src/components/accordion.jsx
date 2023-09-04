@@ -1,11 +1,7 @@
 import React from 'react'
 import { Accordion, AccordionItem } from "@nextui-org/react";
-import plusImage from "../assets/plus-accordion.svg"
-import minusImage from "../assets/minus-accordion.svg"
 
 export default function CustomAccordion() {
-  const defaultContent =
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
   return (
     <Accordion>
       <AccordionItem key="1" aria-label="Accordion 1" title={<p className='font-bold'>01. Quel est le type de réclamations que Shakawina peut recevoir et traiter ?</p>}>

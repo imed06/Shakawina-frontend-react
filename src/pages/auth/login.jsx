@@ -1,5 +1,5 @@
 import { Button, Input, Spacer, Spinner, Image, Link } from '@nextui-org/react'
-import React, { useState, useRouter } from 'react'
+import React, { useState } from 'react'
 import Logo from "../../assets/anemlogo.png"
 import { useAuthContext } from '../../context/authContext';
 import { useNavigate } from 'react-router-dom';

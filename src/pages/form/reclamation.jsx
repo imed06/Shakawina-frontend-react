@@ -1,5 +1,5 @@
 import { Button, Checkbox, Input, Spacer, Spinner, Textarea, Link, Select, SelectItem } from '@nextui-org/react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useAuthContext } from '../../context/authContext';
 import { communes, wilayas } from "../../data/data"
 import { useNavigate } from 'react-router-dom';
@@ -11,9 +11,11 @@ import _ from 'lodash';
 export default function Form() {
     const navigate = useNavigate()
     const [etape, setEtape] = useState(true)
-    const { dispatch } = useAuthContext()
+    const { dispatch, user } = useAuthContext()
     const [isLoading, setIsLoading] = useState(false)
     const [empty, setEmpty] = useState(false)
+    const [file, setFile] = useState(null);
+    const [imageUrl, setImageUrl] = useState('');
 
     const [personalData, setPersonalData] = useState({
         nom: '',
@@ -28,7 +30,6 @@ export default function Form() {
         placeDeliv: '',
         tel: '',
     });
-
     const [complaintData, setComplaintData] = useState({
         content: '',
         type: '',
@@ -51,83 +52,6 @@ export default function Form() {
         setEmpty(false)
     };
 
-    const handleFormSubmit = async (e) => {
-        e.preventDefault();
-
-        const hasEmptyField = _.some(complaintData, value => value === '');
-        if (hasEmptyField) {
-            setEmpty(true);
-            return;
-        }
-
-        const formData = new FormData();
-
-        var userId;
-        var user;
-
-        setIsLoading(true)
-
-        /* add user */
-        try {
-            const response = await fetch('http://localhost:4000/user/signup', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(personalData),
-            });
-
-            const json = await response.json()
-
-            console.log(json)
-
-            userId = json.plaignant.id;
-            user = json
-
-            if (response.ok) {
-                console.log('Data sent successfully');
-            } else {
-                console.error('Failed to send data');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
-
-        complaintData.userId = userId
-
-        formData.append('file', file)
-        formData.append('data', JSON.stringify(complaintData))
-
-        /* add complaint */
-        try {
-            const response = await axios.post('http://localhost:4000/complaint/new', formData, {
-                headers: { 'Content-Type': 'multipart/form-data' },
-            });
-            /* await fetch('http://localhost:4000/complaint/new', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(complaintData),
-            }); */
-
-            console.log(response.data)
-
-            // save the user to local storage
-            localStorage.setItem('user', JSON.stringify(user))
-
-            // update the auth context
-            dispatch({ type: 'LOGIN', payload: user })
-
-            navigate("/user/reclamations")
-
-            setIsLoading(false)
-        }
-        catch (e) {
-            console.log(e)
-        }
-    };
-
     const handleChangeEtape = () => {
         const hasEmptyField = _.some(personalData, value => value === '');
         if (hasEmptyField) {
@@ -138,32 +62,92 @@ export default function Form() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    /* upload files */
-    const [file, setFile] = useState(null);
-
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
     };
 
-    const [imageUrl, setImageUrl] = useState('');
+    /* submit form */
+    const handleFormSubmit = async (e) => {
+        e.preventDefault();
 
-    /*  useEffect(() => {
-         const fetchImage = async () => {
-             try {
-                 const response = await axios.get('http://localhost:4000/api/getImage/1'); // Replace :id with the actual file ID
-                 console.log(response)
-                 setImageUrl(response.data);
-             } catch (error) {
-                 console.error('Error fetching image', error);
-             }
-         };
-         fetchImage();
-     }, []); */
+        if (complaintData.objet === '' || complaintData.type === '') {
+            setEmpty(true);
+            return;
+        }
+
+        const formData = new FormData();
+
+        var userId;
+        var userRes;
+
+        setIsLoading(true)
+
+        /* add user */
+        if (!user) {
+            try {
+                const response = await fetch('http://localhost:4000/user/signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(personalData),
+                });
+
+                const json = await response.json()
+
+                userId = json.plaignant.id;
+                userRes = json
+
+                if (response.ok) {
+                    console.log('Data sent successfully');
+                } else {
+                    console.error('Failed to send data');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+
+            complaintData.userId = userId
+        } else {
+            complaintData.userId = user.plaignant.id
+        }
+        console.log(complaintData)
+
+        formData.append('file', file)
+        formData.append('data', JSON.stringify(complaintData))
+
+        /* add complaint */
+        try {
+            const response = await axios.post('http://localhost:4000/complaint/new', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            });
+
+            if (!user) {
+                // save the user to local storage
+                localStorage.setItem('user', JSON.stringify(userRes))
+
+                // update the auth context
+                dispatch({ type: 'LOGIN', payload: userRes })
+            }
+            navigate("/user/reclamations")
+            setIsLoading(false)
+        }
+        catch (e) {
+            console.log(e)
+        }
+    };
+
+    useEffect(() => {
+        if (user) {
+            setEtape(false)
+        }
+    }, [user]);
 
 
     return (
         <main className='bg-gray-100'>
             <CustomNavbar />
+            
             {/* etape 01 */}
             {
                 etape ?
@@ -184,6 +168,7 @@ export default function Form() {
                                     label="Nom"
                                     labelPlacement='outside'
                                     placeholder="Nom"
+                                    size="md"
                                     value={personalData.nom}
                                     validationState={personalData.nom === "" && empty && "invalid"}
                                     isRequired
@@ -198,6 +183,7 @@ export default function Form() {
                                     value={personalData.prenom}
                                     validationState={personalData.prenom === "" && empty && "invalid"}
                                     isRequired
+                                    size="md"
                                     onChange={e => handleChangePersonal('prenom', e.target.value)}
                                 />
                             </div>
@@ -215,6 +201,7 @@ export default function Form() {
                                     value={personalData.wilaya}
                                     validationState={personalData.wilaya === "" && empty && "invalid"}
                                     isRequired
+                                    size="md"
                                     onChange={e => handleChangePersonal('wilaya', e.target.value)}
                                 >
                                     {wilayas.map((wilaya) => {
@@ -232,6 +219,7 @@ export default function Form() {
                                     value={personalData.commune}
                                     validationState={personalData.commune === "" && empty && "invalid"}
                                     isRequired
+                                    size="md"
                                     onChange={e => handleChangePersonal('commune', e.target.value)}
                                 >
                                     {
@@ -258,6 +246,7 @@ export default function Form() {
                                     value={personalData.natureDoc}
                                     validationState={personalData.natureDoc === "" && empty && "invalid"}
                                     isRequired
+                                    size="md"
                                     onChange={e => handleChangePersonal('natureDoc', e.target.value)}
                                 >
                                     <SelectItem key="pièce d'identité">pièce d'identité</SelectItem>
@@ -273,6 +262,7 @@ export default function Form() {
                                     value={personalData.numDoc}
                                     validationState={personalData.numDoc === "" && empty && "invalid"}
                                     isRequired
+                                    size="md"
                                     onChange={e => handleChangePersonal('numDoc', e.target.value)}
                                 />
                             </div>
@@ -286,6 +276,7 @@ export default function Form() {
                                     value={personalData.dateDeliv}
                                     validationState={personalData.dateDeliv === "" && empty && "invalid"}
                                     isRequired
+                                    size="md"
                                     onChange={e => handleChangePersonal('dateDeliv', e.target.value)}
                                 />
                                 <Spacer x={4}></Spacer>
@@ -297,6 +288,7 @@ export default function Form() {
                                     value={personalData.placeDeliv}
                                     validationState={personalData.placeDeliv === "" && empty && "invalid"}
                                     isRequired
+                                    size="md"
                                     onChange={e => handleChangePersonal('placeDeliv', e.target.value)}
                                 >
                                     {wilayas.map((wilaya) => {
@@ -320,6 +312,7 @@ export default function Form() {
                                     value={personalData.email}
                                     validationState={personalData.email === "" && empty && "invalid"}
                                     isRequired
+                                    size="md"
                                     onChange={e => handleChangePersonal('email', e.target.value)}
                                 />
                                 <Spacer x={4}></Spacer>
@@ -333,6 +326,7 @@ export default function Form() {
                                     value={personalData.tel}
                                     validationState={personalData.tel === "" && empty && "invalid"}
                                     isRequired
+                                    size="md"
                                     onChange={e => handleChangePersonal('tel', e.target.value)}
                                 />
                             </div>
@@ -377,11 +371,12 @@ export default function Form() {
                                     labelPlacement='outside'
                                     validationState={complaintData.type === "" && empty && "invalid"}
                                     isRequired
+                                    size="md"
                                     onChange={e => handleChangeComplaint('type', e.target.value)}
                                 >
                                     <SelectItem key="reclamation">Réclamation</SelectItem>
                                     <SelectItem key="remarque">Remarque</SelectItem>
-                                    <SelectItem key="suggestion">suggestion</SelectItem>
+                                    <SelectItem key="suggestion">Suggestion</SelectItem>
                                 </Select>
                             </div>
 
@@ -394,9 +389,20 @@ export default function Form() {
                                     labelPlacement='outside'
                                     validationState={complaintData.objet === "" && empty && "invalid"}
                                     isRequired
+                                    size="md"
                                     onChange={e => handleChangeComplaint('objet', e.target.value)}
                                 >
-                                    <SelectItem key="mauvais service">mauvais service</SelectItem>
+                                    <SelectItem key="Retard de paiement des allocations de chômage">Retard de paiement des allocations de chômage</SelectItem>
+                                    <SelectItem key="Manque de transparence dans le processus de placement">Manque de transparence dans le processus de placement</SelectItem>
+                                    <SelectItem key="Discrimination lors du processus de recrutement ou de placement">Discrimination lors du processus de recrutement ou de placement</SelectItem>
+                                    <SelectItem key="Problèmes liés au processus d'inscription en tant que demandeur d'emploi">Problèmes liés au processus d'inscription en tant que demandeur d'emploi</SelectItem>
+                                    <SelectItem key="Dossier d'inscription perdu ou mal géré par l'ANEM">Dossier d'inscription perdu ou mal géré par l'ANEM</SelectItem>
+                                    <SelectItem key="Mauvaise communication concernant les opportunités d'emploi ou de formation">Mauvaise communication concernant les opportunités d'emploi ou de formation</SelectItem>
+                                    <SelectItem key="Difficultés à accéder aux services de l'ANEM en ligne">Difficultés à accéder aux services de l'ANEM en ligne</SelectItem>
+                                    <SelectItem key="Demandes de renseignements non traitées ou ignorées">Demandes de renseignements non traitées ou ignorées</SelectItem>
+                                    <SelectItem key="Erreurs dans les paiements ou les documents administratifs">Erreurs dans les paiements ou les documents administratifs</SelectItem>
+                                    <SelectItem key="Problèmes liés à l'infrastructure ou aux installations de l'ANEM">Problèmes liés à l'infrastructure ou aux installations de l'ANEM</SelectItem>
+                                    <SelectItem key="Autre">Autre</SelectItem>
                                 </Select>
                             </div>
 
@@ -408,7 +414,6 @@ export default function Form() {
                                     labelPlacement="outside"
                                     placeholder="Enter your description"
                                     validationState={complaintData.content === "" && empty && "invalid"}
-                                    isRequired
                                     onChange={e => handleChangeComplaint('content', e.target.value)}
                                 />
                             </div>
@@ -416,7 +421,7 @@ export default function Form() {
                             {/* pièces jointes */}
                             <Spacer y={8} />
                             <div className='w-full'>
-                                <label className="block mb-2 text-sm font-medium text-gray-900" for="file_input">Ajouter un fichier</label>
+                                <label className="block mb-2 text-sm font-medium text-gray-900" htmlFor="file_input">Ajouter un fichier</label>
                                 <input className="block w-full text-lg text-gray-50 border border-gray-300 rounded-lg cursor-pointer bg-gray-900 dark:text-gray-900 focus:outline-none dark:bg-gray-900 dark:border-gray-600 placeholder-gray-900" id="file_input" type="file" onChange={handleFileChange} />
                             </div>
                             {imageUrl !== "" && <img src={"http://localhost:4000/uploads/" + imageUrl} alt="Uploaded" />}

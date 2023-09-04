@@ -1,10 +1,11 @@
 import { useAuthContext } from '../../context/authContext'
-import { Button, Input, Spacer, Link, Select, SelectItem, Spinner } from '@nextui-org/react'
+import { Button, Input, Spacer, Link, Select, SelectItem, Spinner, Avatar } from '@nextui-org/react'
 import React, { useEffect, useState } from 'react'
 import CustomNavbar from '../../components/shared/navbar'
 import Footer from '../../components/shared/footer'
 import { useNavigate } from 'react-router-dom'
 import { communes, wilayas } from '../../data/data'
+import profile from "../../assets/profile.png"
 
 export default function Profile() {
     const navigate = useNavigate()
@@ -185,6 +186,15 @@ export default function Profile() {
                         </svg>
                         <h1 className='text-[#101739] text-2xl'>Mon profile</h1>
                     </div>
+                    <div className='flex justify-center'>
+                        <Avatar
+                            isBordered
+                            radius="full"
+                            color='warning'
+                            src={profile}
+                            className='w-28 h-28'
+                        />
+                    </div>
                     <div className='flex w-full items-center flex-col'>
 
                         {/* Informations générale */}
@@ -192,9 +202,9 @@ export default function Profile() {
                         <h2 className='font-bold'>Info général</h2>
                         <Spacer y={8} />
                         <div className='input'>
-                            <Input type="text" label="Nom" labelPlacement='outside' placeholder={user.plaignant.nom} onChange={e => handleChangePersonal('nom', e.target.value)} />
+                            <Input type="text" label="Nom" size='lg' labelPlacement='outside' placeholder={user.plaignant.nom} onChange={e => handleChangePersonal('nom', e.target.value)} />
                             <Spacer x={4}></Spacer>
-                            <Input type="text" label="Prenom" labelPlacement='outside' placeholder={user.plaignant.prenom} onChange={e => handleChangePersonal('prenom', e.target.value)} />
+                            <Input type="text" label="Prenom" size='lg' labelPlacement='outside' placeholder={user.plaignant.prenom} onChange={e => handleChangePersonal('prenom', e.target.value)} />
                         </div>
 
                         {/* Adresse */}
@@ -207,6 +217,7 @@ export default function Profile() {
                                 placeholder={user.plaignant.wilaya}
                                 labelPlacement='outside'
                                 isRequired
+                                size='lg'
                                 onChange={e => handleChangePersonal('wilaya', e.target.value)}
                             >
                                 {wilayas.map((wilaya) => {
@@ -221,6 +232,7 @@ export default function Profile() {
                                 placeholder={user.plaignant.commune}
                                 labelPlacement='outside'
                                 isRequired
+                                size='lg'
                                 onChange={e => handleChangePersonal('commune', e.target.value)}
                             >
                                 {
@@ -242,6 +254,7 @@ export default function Profile() {
                             <Select
                                 label="Nature du document"
                                 labelPlacement='outside'
+                                size='lg'
                                 placeholder={user.plaignant.natureDoc}
                                 onChange={e => handleChangePersonal('natureDoc', e.target.value)}
                             >
@@ -250,12 +263,12 @@ export default function Profile() {
                                 <SelectItem key="passport">passport</SelectItem>
                             </Select>
                             <Spacer x={4}></Spacer>
-                            <Input type="num" label="Numéro du pièce" labelPlacement='outside' placeholder={user.plaignant.numDoc}
+                            <Input type="num" label="Numéro du pièce" size='lg' labelPlacement='outside' placeholder={user.plaignant.numDoc}
                                 onChange={e => handleChangePersonal('numDoc', e.target.value)} />
                         </div>
                         <Spacer y={4} />
                         <div className='input'>
-                            <Input type="date" label="Date de délivrance" labelPlacement='outside' placeholder={user.plaignant.dateDeliv}
+                            <Input type="date" label="Date de délivrance" size='lg' labelPlacement='outside' placeholder={user.plaignant.dateDeliv}
                                 onChange={e => handleChangePersonal('dateDeliv', e.target.value)} />
                             <Spacer x={4}></Spacer>
                             <Select
@@ -263,6 +276,7 @@ export default function Profile() {
                                 placeholder={user.plaignant.placeDeliv}
                                 labelPlacement='outside'
                                 isRequired
+                                size='lg'
                                 onChange={e => handleChangePersonal('placeDeliv', e.target.value)}
                             >
                                 {wilayas.map((wilaya) => {
@@ -278,10 +292,10 @@ export default function Profile() {
                         <h2 className='font-bold'>Contact</h2>
                         <Spacer y={8} />
                         <div className='input'>
-                            <Input type="email" label="Email" labelPlacement='outside' placeholder={user.plaignant.email}
+                            <Input type="email" label="Email" size='lg' labelPlacement='outside' placeholder={user.plaignant.email}
                                 onChange={e => handleChangePersonal('email', e.target.value)} />
                             <Spacer x={4}></Spacer>
-                            <Input type="tel" label="Numéro tel" labelPlacement='outside' placeholder={user.plaignant.tel}
+                            <Input type="tel" label="Numéro tel" size='lg' labelPlacement='outside' placeholder={user.plaignant.tel}
                                 onChange={e => handleChangePersonal('tel', e.target.value)} />
                         </div>
                         <Spacer y={4} />
@@ -290,6 +304,7 @@ export default function Profile() {
                                 label="Ancien mot de passe"
                                 labelPlacement='outside' placeholder="mot de passe"
                                 isRequired
+                                size='lg'
                                 onChange={e => handleChangePersonal('ancienPW', e.target.value)}
                                 validationState={empty && "invalid"}
                                 endContent={
@@ -310,6 +325,7 @@ export default function Profile() {
                                 labelPlacement='outside'
                                 placeholder="mot de passe"
                                 isRequired
+                                size='lg'   
                                 onChange={e => handleChangePersonal('nouveauPW', e.target.value)}
                                 endContent={
                                     <button className="focus:outline-none" type="button" onClick={toggleVisibility}>

@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import Sidebar from '../../components/shared/Sidebar'
-import ReclamationCard from '../../components/cards/reclamation'
-import AnswerCard from '../../components/cards/reponse'
 import { Link, Spacer } from '@nextui-org/react'
 import { useAuthContext } from '../../context/authContext'
 import AdminReclamation from '../../components/cards/admin/adminReclamation'
@@ -10,7 +8,6 @@ import AdminSuggestion from '../../components/cards/admin/adminSuggestion'
 
 export default function Dashboard() {
 
-    const [complaints, setComplaints] = useState(null)
     const [countComplaints, setCountComplaints] = useState(0)
 
     const { user } = useAuthContext()

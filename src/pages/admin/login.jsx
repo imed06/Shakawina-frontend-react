@@ -1,6 +1,6 @@
 import { Button, Checkbox, Input, Spacer, Spinner, Image } from '@nextui-org/react'
 import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import _ from 'lodash';
 import { useAuthContext } from '../../context/authContext';
 import logo from '../../assets/anemlogo.png'
@@ -145,7 +145,7 @@ export default function LoginAdmin() {
     return (
         <div className='h-screen items-center admin'>
             <div className='h-full justify-center items-center flex flex-col'>
-                <div className='justify-center text-xl font-bold'><Image src={logo} width={150}  alt='logo'></Image></div>
+                <div className='justify-center text-xl font-bold'><Image src={logo} width={150} alt='logo'></Image></div>
                 <Spacer y={8} />
                 {
                     error &&
@@ -166,6 +166,8 @@ export default function LoginAdmin() {
                         <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
                     }
                     label="Nom utilisateur"
+                    labelPlacement="outside"
+                    size="lg"
                     placeholder="Entrer votre nom d'utilisateur"
                     variant="bordered"
                     className="max-w-lg"
@@ -187,10 +189,12 @@ export default function LoginAdmin() {
                         </button>}
                     label="Mot de passe"
                     placeholder="Entrer votre mot de passe"
+                    labelPlacement="outside"
                     type={isVisible ? "text" : "password"}
                     validationState={password === "" && empty && 'invalid'}
                     variant="bordered"
                     className="max-w-lg"
+                    size="lg"
                     onChange={(e) => {
                         setEmpty(false)
                         setPassword(e.target.value)
@@ -207,9 +211,7 @@ export default function LoginAdmin() {
                     >
                         Se souvenir de moi
                     </Checkbox>
-                    <Link href="#" size="sm">
-                        <p className='text-primary'>Mot de passe oublié?</p>
-                    </Link>
+                    <p className='text-primary'>Mot de passe oublié?</p>
                 </div>
                 <Spacer y={8} />
                 {

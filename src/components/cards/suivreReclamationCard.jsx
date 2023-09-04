@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, CardHeader, CardBody, Image, Link } from "@nextui-org/react";
+import { Card, CardBody, Image, Link } from "@nextui-org/react";
 import icon from "../../assets/icon2.png"
 import { useAuthContext } from '../../context/authContext';
 

@@ -4,7 +4,6 @@ import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Textar
 import { useAuthContext } from "../../context/authContext";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@nextui-org/react";
 
-
 export default function AnswerCard({ complaint }) {
 
     const [isOpenAnswer, setIsOpen] = useState(false)
@@ -94,9 +93,9 @@ export default function AnswerCard({ complaint }) {
                         }
                     </div>
                     :
-                    <div>
+                    <div >
                         <Divider className="my-4" />
-                        {complaint.answer.content}
+                        <div className="flex justify-center">{complaint.answer.content}</div>
                     </div>
                 :
                 null
@@ -115,10 +114,10 @@ export default function AnswerCard({ complaint }) {
             <TableBody emptyContent={"No rows to display."} content="kfjd">
                 <TableRow key="1">
                     <TableCell>{complaint.id}</TableCell>
-                    <TableCell>{complaint.type}</TableCell>
+                    <TableCell>{complaint.objet}</TableCell>
                     <TableCell>{formattedDate}</TableCell>
                     <TableCell>{complaint.type}</TableCell>
-                    <TableCell>{complaint.content}</TableCell>
+                    <TableCell>{complaint.content === '' ? <div>/</div> : complaint.content}</TableCell>
                     <TableCell className={complaint.status === "Traitée" ? "text-success" : "text-warning"} >{complaint.status}</TableCell>
                     <TableCell>
                         {
@@ -134,6 +133,7 @@ export default function AnswerCard({ complaint }) {
                                                     <ModalHeader className="flex flex-col gap-1">Attachement</ModalHeader>
                                                     <ModalBody className=" justify-center items-center">
                                                         <Image src={"http://localhost:4000/uploads/" + complaint.files[0].path} />
+                                                        
                                                     </ModalBody>
                                                     <ModalFooter className="bg-white">
                                                         <Button color="danger" variant="light" onPress={onClose}>

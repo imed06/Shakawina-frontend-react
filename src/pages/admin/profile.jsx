@@ -1,13 +1,11 @@
 import React, { useState } from 'react'
 import Sidebar from '../../components/shared/Sidebar'
-import { Avatar, Input, Spacer, Spinner, User } from '@nextui-org/react'
+import { Avatar, Input, Spacer, Spinner } from '@nextui-org/react'
 import profile from "../../assets/profile.png"
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button } from "@nextui-org/react";
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Button } from "@nextui-org/react";
 import { useAuthContext } from '../../context/authContext';
-import { useNavigate } from 'react-router-dom';
 
 export default function AdminProfile() {
-    const navigate = useNavigate()
     const { user, dispatch } = useAuthContext()
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(false)
@@ -233,6 +231,7 @@ export default function AdminProfile() {
                             label="Ancien mot de passe"
                             labelPlacement='outside' placeholder="mot de passe"
                             isRequired
+                            size="lg"
                             onChange={e => handleChangePersonal('ancienPW', e.target.value)}
                             validationState={empty && "invalid"}
                             endContent={
@@ -253,6 +252,7 @@ export default function AdminProfile() {
                             labelPlacement='outside'
                             placeholder="mot de passe"
                             isRequired
+                            size="lg"
                             onChange={e => handleChangePersonal('nouveauPW', e.target.value)}
                             endContent={
                                 <button className="focus:outline-none" type="button" onClick={toggleVisibility}>
