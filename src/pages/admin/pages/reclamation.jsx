@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Sidebar from '../../../components/shared/Sidebar';
 import AnswerCard from '../../../components/cards/reponse';
+import { Input } from '@nextui-org/react';
 
 export default function Reclamation() {
 
@@ -28,6 +29,7 @@ export default function Reclamation() {
     getComplains()
   }, [])
 
+
   return (
     <div className='h-screen flex justify-between'>
       <div className='w-[20%] bg-[#1F2937] h-full'>
@@ -35,8 +37,7 @@ export default function Reclamation() {
       </div>
       <div className='flex flex-col items-center w-full h-full'>
         <div className='h-full overflow-auto px-2 space-y-8 py-8 '>
-        <div className='font-bold justify-start flex items-start text-xl'>Dashboard / Réclamations</div>
-
+          <div className='font-bold justify-start flex items-start text-xl'># Réclamations</div>
           {
             complaints != null &&
             complaints.map((complaint) => {

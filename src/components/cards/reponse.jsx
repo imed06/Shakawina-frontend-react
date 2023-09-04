@@ -1,8 +1,8 @@
-"use client"
 import React, { useState } from "react";
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Textarea, Button, Spacer, Divider, Image, Spinner } from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Textarea, Button, Spacer, Divider, Image, Spinner, Chip } from "@nextui-org/react";
 import { useAuthContext } from "../../context/authContext";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@nextui-org/react";
+import { MapInteractionCSS } from 'react-map-interaction';
 
 export default function AnswerCard({ complaint }) {
 
@@ -13,8 +13,6 @@ export default function AnswerCard({ complaint }) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     const { user } = useAuthContext()
-
-    console.log(user)
 
     const formattedDate = new Date(complaint.createdAt).toLocaleDateString('en-US', {
         year: 'numeric',
@@ -65,6 +63,9 @@ export default function AnswerCard({ complaint }) {
                             label="Réponse sur la réclamation"
                             labelPlacement="outside"
                             placeholder="Entrer votre réponse"
+                            size="lg"
+                            variant="faded"
+                            description="Cette réponse sera envoyer au déposeur de la réclamation."
                             onChange={(e) => setAnswerContent(e.target.value)}
                         />
                         <Spacer y={4} />
@@ -85,7 +86,7 @@ export default function AnswerCard({ complaint }) {
                                             </div>
                                         </div>
                                     }
-                                    <Button color="success" className=' w-xs text-xs font-medium text-white' onClick={handleSubmit}>
+                                    <Button color="success" className=' w-xs text-lg font-medium text-white' onClick={handleSubmit}>
                                         Soumettre
                                     </Button>
                                 </div>
@@ -103,22 +104,28 @@ export default function AnswerCard({ complaint }) {
         >
             <TableHeader>
                 <TableColumn>CODE</TableColumn>
-                <TableColumn>OBJET RECLAMATION</TableColumn>
+                <TableColumn>NOM</TableColumn>
                 <TableColumn>DATE</TableColumn>
-                <TableColumn>TYPE RECLAMATION</TableColumn>
-                <TableColumn>CORPS RECLAMATION</TableColumn>
+                <TableColumn>OBJET</TableColumn>
+                <TableColumn>TYPE</TableColumn>
+                <TableColumn>CORPS</TableColumn>
                 <TableColumn>STATUS</TableColumn>
                 <TableColumn>ATTACHEMENTS</TableColumn>
-                <TableColumn>REPONSE</TableColumn>
+                <TableColumn>ACTION</TableColumn>
             </TableHeader>
             <TableBody emptyContent={"No rows to display."} content="kfjd">
                 <TableRow key="1">
                     <TableCell>{complaint.id}</TableCell>
-                    <TableCell>{complaint.objet}</TableCell>
+                    <TableCell className="font-semibold">{complaint.plaignant.nom} {complaint.plaignant.prenom}</TableCell>
                     <TableCell>{formattedDate}</TableCell>
+                    <TableCell>{complaint.objet}</TableCell>
                     <TableCell>{complaint.type}</TableCell>
                     <TableCell>{complaint.content === '' ? <div>/</div> : complaint.content}</TableCell>
-                    <TableCell className={complaint.status === "Traitée" ? "text-success" : "text-warning"} >{complaint.status}</TableCell>
+                    <TableCell>
+                        <Chip className="capitalize" color={complaint.status === "Traitée" ? "success" : "warning"} size="sm" variant="light">
+                            {complaint.status}
+                        </Chip>
+                    </TableCell>
                     <TableCell>
                         {
                             complaint.files.length !== 0 ?
@@ -126,20 +133,18 @@ export default function AnswerCard({ complaint }) {
                                     <div onClick={onOpen} className="flex cursor-pointer justify-center items-center">
                                         <Image src={"http://localhost:4000/uploads/" + complaint.files[0].path} width={70} />
                                     </div>
-                                    <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+                                    <Modal isOpen={isOpen} onOpenChange={onOpenChange} backdrop="blur" scrollBehavior="normal">
                                         <ModalContent>
                                             {(onClose) => (
                                                 <>
-                                                    <ModalHeader className="flex flex-col gap-1">Attachement</ModalHeader>
+                                                    <ModalHeader>Pièce jointe</ModalHeader>
                                                     <ModalBody className=" justify-center items-center">
-                                                        <Image src={"http://localhost:4000/uploads/" + complaint.files[0].path} />
-                                                        
+                                                        {/* <Image src={"http://localhost:4000/uploads/" + complaint.files[0].path} /> */}
+                                                        <MapInteractionCSS>
+                                                            <img src={"http://localhost:4000/uploads/" + complaint.files[0].path} />
+                                                        </MapInteractionCSS>
                                                     </ModalBody>
-                                                    <ModalFooter className="bg-white">
-                                                        <Button color="danger" variant="light" onPress={onClose}>
-                                                            Fermer
-                                                        </Button>
-                                                    </ModalFooter>
+
                                                 </>
                                             )}
                                         </ModalContent>
@@ -150,7 +155,7 @@ export default function AnswerCard({ complaint }) {
                         }
                     </TableCell>
                     <TableCell className=" cursor-pointer">
-                        <Button color="primary" className=' max-w-xs w-full text-xs font-medium' onClick={() => setIsOpen(!isOpenAnswer)}>
+                        <Button color="primary" className=' max-w-xs  text-xs font-medium' variant="light" onClick={() => setIsOpen(!isOpenAnswer)}>
                             {complaint.status === "En révision" ? "Répondre" : "Réponse"}
                         </Button>
                     </TableCell>

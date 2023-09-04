@@ -12,6 +12,7 @@ import Suggestion from "./pages/admin/pages/suggestions";
 import Remarque from "./pages/admin/pages/remarques";
 import AdminProfile from "./pages/admin/profile";
 import AdminArchive from "./pages/admin/pages/archive";
+import Users from "./pages/admin/pages/users";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
         <Route path="/admin/suggestions" element={<Suggestion />} />
         <Route path="/admin/profile" element={<AdminProfile />} />
         <Route path="/admin/archive" element={<AdminArchive />} />
+        <Route path="/admin/users" element={<Users />} />
       </Routes>
     </BrowserRouter>
   );

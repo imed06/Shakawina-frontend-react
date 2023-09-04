@@ -371,7 +371,7 @@ export default function Profile() {
                     </div>
                 </div>
                 :
-                <div className='flex justify-center items-center w-full h-screen'>Se connecter pour voir votre profile</div>
+                <div className='flex justify-center items-center w-full h-screen font-bold'>Se connecter pour voir votre profile</div>
             }
             <Footer />
         </main>

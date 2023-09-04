@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ListReclamation from '../../components/listReclamation'
-import { Button, Link } from '@nextui-org/react'
+import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Link } from '@nextui-org/react'
 import { useAuthContext } from '../../context/authContext'
 import CustomNavbar from '../../components/shared/navbar'
 import Footer from '../../components/shared/footer'
@@ -30,9 +30,6 @@ function UserReclamations() {
     }
   }, [user])
 
-
-
-
   return (
     <main>
       <CustomNavbar />
@@ -46,6 +43,8 @@ function UserReclamations() {
               </svg>
               <h1 className='text-3xl'>Mes doléances</h1>
             </div>
+
+
             <Link href="/form">
               <Button className="text-white font-bold bg-black" >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
@@ -59,12 +58,12 @@ function UserReclamations() {
             complaints != null &&
             complaints.map((complaint) => {
               return (
-                <ListReclamation complaint={complaint} key={complaint.id}/>
+                <ListReclamation complaint={complaint} key={complaint.id} />
               )
             })
           }
         </div> :
-        <div className='flex justify-center items-center w-full h-screen'>Se connecter pour voir vos réclamations</div>
+        <div className='flex justify-center items-center w-full h-screen font-bold'>Se connecter pour voir vos réclamations</div>
       }
       <Footer />
     </main>
