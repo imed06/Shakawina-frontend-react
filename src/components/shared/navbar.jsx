@@ -78,21 +78,6 @@ export default function CustomNavbar() {
             </NavbarContent>
             <Spacer x={4} />
             <NavbarContent justify="end">
-                <Select
-                    size="sm"
-                    placeholder="lang"
-                    className="w-24"
-                    aria-label="lang"
-                    defaultSelectedKeys={["fr"]}
-                    startContent={<LangIcon />}
-                >
-                    <SelectItem key="fr" value="Français">
-                        Fr
-                    </SelectItem>
-                    <SelectItem key="ar" value="العربية">
-                      Ar
-                    </SelectItem>
-                </Select>
 
                 {user ?
                     <div>
@@ -125,7 +110,7 @@ export default function CustomNavbar() {
 
                     :
                     <Link href="/auth/login">
-                        <Button color="primary" className="text-primary font-bold" variant="bordered" >
+                        <Button color="primary" variant="ghost" className="text-primary font-bold" >
                             Se connecter
                         </Button>
                     </Link>

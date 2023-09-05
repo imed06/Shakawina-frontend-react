@@ -343,11 +343,11 @@ export default function Form() {
 
                             <div className='flex w-full justify-between'>
                                 <Link href="/">
-                                    <Button className="text-gray-500 font-bold" >
+                                    <Button className="text-gray-500 font-bold" size="lg">
                                         Annuler
                                     </Button>
                                 </Link>
-                                <Button color="warning" className="text-white font-bold" onClick={handleChangeEtape}>
+                                <Button color="warning" size="lg" className="text-white font-bold" onClick={handleChangeEtape}>
                                     Continue
                                 </Button>
                             </div>
@@ -413,7 +413,6 @@ export default function Form() {
                                     label="Corps de réclamation"
                                     labelPlacement="outside"
                                     placeholder="Enter your description"
-                                    validationState={complaintData.content === "" && empty && "invalid"}
                                     onChange={e => handleChangeComplaint('content', e.target.value)}
                                 />
                             </div>
@@ -434,7 +433,7 @@ export default function Form() {
                             <Spacer y={16} />
                             <div className='input justify-between'>
 
-                                <Button className="text-gray-500 font-bold" onClick={() => setEtape(true)} >
+                                <Button className="text-gray-500 font-bold" size="lg" onClick={() => setEtape(true)} >
                                     Précédent
                                 </Button>
 
@@ -442,7 +441,7 @@ export default function Form() {
                                     isLoading ?
                                         <Spinner />
                                         :
-                                        <Button color="warning" className="text-white font-bold" onClick={handleFormSubmit}>
+                                        <Button color="warning" size="lg" className="text-white font-bold" onClick={handleFormSubmit}>
                                             Envoyer
                                         </Button>
                                 }

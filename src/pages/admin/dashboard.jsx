@@ -70,7 +70,7 @@ export default function Dashboard() {
                     <ReclamationCard type={"Remarque"} />
                     <ReclamationCard type={"Suggestion"} /> */}
                     <Link href="/admin/reclamations">
-                        <AdminReclamation />
+                        <AdminReclamation content={countComplaints.countNonTraités} />
                     </Link>
                     <Link href="/admin/remarques">
                         <AdminRemarque />

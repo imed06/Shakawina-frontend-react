@@ -16,7 +16,7 @@ export default function Home() {
       <div className="content">
         <div className="header">
           <div>
-            <h1 className=" leading-tight text-black">
+            <h1 className=" leading-tight text-black font-bold">
               PLATE-FORME DE <br />
               RÉCLAMATION
             </h1>
@@ -28,11 +28,11 @@ export default function Home() {
           <Image
             src={QuestionImage}
             alt="illustration"
-            width={400}
+            width={600}
             quality={100}
           />
         </div>
-        <div className="flex justify-center gap-16">
+        <div className="flex justify-center gap-x-16 mt-8">
           <SoumettreReclamationCard />
           <SuivreReclamationCard />
         </div>

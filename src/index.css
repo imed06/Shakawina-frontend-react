@@ -15,16 +15,16 @@ main {
   @apply flex justify-between items-center flex-col
 }
 
-.content {
+/* .content {
   @apply mt-20
-}
+} */
 
 .input {
   @apply flex w-full
 }
 
 .header {
-  @apply flex justify-evenly items-center
+  @apply flex justify-center items-center bg-no-repeat bg-cover h-full pt-16
 }
 
 .header>p {

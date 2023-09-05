@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Sidebar from '../../../components/shared/Sidebar';
 import AnswerCard from '../../../components/cards/reponse';
+import { Spinner } from '@nextui-org/react';
 
 export default function AdminArchive() {
 
@@ -34,15 +35,16 @@ export default function AdminArchive() {
         <Sidebar />
       </div>
       <div className='flex flex-col items-center w-full h-full'>
-        <div className='h-full overflow-auto px-2 space-y-8 py-8 '>
+        <div className='h-full overflow-auto px-2 space-y-8 py-8 justify-start items-start'>
         <div className='font-bold justify-start flex items-start text-xl'># Réclamations archivées</div>
           {
-            complaints != null &&
+            complaints != null ?
             complaints.map((complaint) => {
               return (
                 <AnswerCard complaint={complaint} key={complaint.id} />
               )
-            })
+            }) : 
+            <Spinner className='justify-center flex items-center h-full' />
           }
         </div>
       </div>
