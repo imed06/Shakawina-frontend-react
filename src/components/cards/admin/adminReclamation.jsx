@@ -3,7 +3,7 @@ import React from 'react'
 
 export default function AdminReclamation({content}) {
     return (
-        <Badge content={content} color="danger" placement="top-left">
+        <Badge content={content === 0 ? null : content } color="danger" placement="top-left">
 
             <div className="card-container adminReclamation">
                 <div className="card">

@@ -9,6 +9,8 @@ import AdminSuggestion from '../../components/cards/admin/adminSuggestion'
 export default function Dashboard() {
 
     const [countComplaints, setCountComplaints] = useState(0)
+    const [countRemarques, setCountRemarques] = useState(0)
+    const [countSuggestions, setCountSuggestions] = useState(0)
 
     const { user } = useAuthContext()
 
@@ -22,7 +24,6 @@ export default function Dashboard() {
                 }
 
                 const data = await response.json();
-
                 setCountComplaints(data)
             } catch (error) {
                 console.error('Error fetching user blogs:', error);
@@ -73,10 +74,10 @@ export default function Dashboard() {
                         <AdminReclamation content={countComplaints.countNonTraités} />
                     </Link>
                     <Link href="/admin/remarques">
-                        <AdminRemarque />
+                        <AdminRemarque content={countComplaints.remarqueCount} />
                     </Link>
                     <Link href="/admin/suggestions">
-                        <AdminSuggestion />
+                        <AdminSuggestion content={countComplaints.suggestionCount}/>
                     </Link>
                 </div>
                 <Spacer y={16} />
@@ -99,7 +100,7 @@ export default function Dashboard() {
                         <div className="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
                             <div className="my-auto">
                                 <p className="font-bold">RECLAMATIONS NON TRAITES</p>
-                                <p className="text-lg">{countComplaints.countNonTraités}</p>
+                                <p className="text-lg">{(countComplaints.countNonTraités + countComplaints.suggestionCount + countComplaints.remarqueCount).toString()}</p>
                             </div>
                             <div className="my-auto">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
